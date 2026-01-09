@@ -66,13 +66,17 @@
         <h1 class="text-4xl font-bold text-yellow-600 mb-2">Python Kids!</h1>
         <p class="text-gray-500 mb-8 font-medium text-lg">Jadilah detektif kode paling hebat!</p>
         
+        <div id="auth-status" class="hidden mb-4 p-2 bg-red-100 text-red-600 text-xs rounded-lg font-bold">
+            Menghubungkan ke server...
+        </div>
+
         <div class="mb-6">
             <label class="block text-left text-sm font-bold text-gray-400 mb-2 ml-1">NAMA DETEKTIF:</label>
             <input type="text" id="player-name" placeholder="Siapa namamu?" 
                 class="w-full px-6 py-4 bg-gray-50 border-2 border-yellow-200 rounded-2xl focus:outline-none focus:border-yellow-500 text-xl text-center shadow-inner">
         </div>
         
-        <button onclick="handleStart()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black py-5 rounded-2xl text-2xl transition-all active:scale-95 shadow-[0_6px_0_rgb(202,138,4)]">
+        <button id="btn-start" onclick="handleStart()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black py-5 rounded-2xl text-2xl transition-all active:scale-95 shadow-[0_6px_0_rgb(202,138,4)]">
             AYO MULAI!
         </button>
 
@@ -92,9 +96,7 @@
             Selamat datang, Admin! Di sini Anda dapat melihat semua data peserta yang sudah mengerjakan kuis.
         </div>
 
-        <div id="admin-list" class="max-h-[500px] overflow-y-auto custom-scroll space-y-2 pr-2">
-            <!-- Admin data rows go here -->
-        </div>
+        <div id="admin-list" class="max-h-[500px] overflow-y-auto custom-scroll space-y-2 pr-2"></div>
     </div>
 
     <!-- Game Screen -->
@@ -151,19 +153,17 @@
         import { getFirestore, collection, addDoc, getDocs, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
         import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
-        // Ganti objek ini dengan "Firebase Config" dari dashboard Firebase anda
+        // Ganti dengan Config anda jika dijalankan di luar lingkungan preview
         const firebaseConfig = {
-            apiKey: "", 
-            authDomain: "",
-            projectId: "",
-            storageBucket: "",
-            messagingSenderId: "",
-            appId: ""
+            apiKey: "AIzaSyD45ESoMX5WYEeOEmhzZUvwBsjeRmxpSBY",
+            authDomain: "kuis-python-sd.firebaseapp.com",
+            projectId: "kuis-python-sd",
+            storageBucket: "kuis-python-sd.firebasestorage.app",
+            messagingSenderId: "930505177436",
+            appId: "1:930505177436:web:c0c25a72dbbe693ebe6999"
         };
 
-        // Fallback untuk lingkungan preview
         const actualConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : firebaseConfig;
-
         const app = initializeApp(actualConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
@@ -177,19 +177,9 @@
             { code: 'if 10 > 5:', q: 'Apakah 10 lebih besar dari 5?', opt: ['Ya (True)', 'Tidak (False)', 'Mungkin', 'Salah Semua'], corr: 0 },
             { code: 'angka = [1, 2, 3]', q: 'Apa nama tipe data ini?', opt: ['String', 'Integer', 'List (Daftar)', 'Print'], corr: 2 },
             { code: '# Ini komentar', q: 'Apakah baris kode ini dijalankan?', opt: ['Ya', 'Tidak', 'Hanya di pagi hari', 'Eror'], corr: 1 },
-            { code: 'a = "10"\nb = "5"\nprint(a + b)', q: 'Jika a dan b adalah teks, hasil a+b?', opt: ['15', '105', '510', 'Eror'], corr: 1 },
-            { code: 'input("Siapa namamu?")', q: 'Fungsi input() digunakan untuk?', opt: ['Keluar program', 'Mencetak teks', 'Meminta jawaban user', 'Menghapus data'], corr: 2 },
-            { code: 'for i in range(3):', q: 'Berapa kali kode di dalamnya diulang?', opt: ['1 kali', '2 kali', '3 kali', '0 kali'], corr: 2 },
             { code: 'print(5 * 2)', q: 'Simbol (*) dalam Python artinya?', opt: ['Tambah', 'Kali', 'Kurang', 'Bintang'], corr: 1 },
-            { code: 'apel = 3\napel = 5', q: 'Berapa jumlah apel sekarang?', opt: ['3', '5', '8', '0'], corr: 1 },
-            { code: 'if 2 == 2:', q: 'Simbol (==) digunakan untuk?', opt: ['Menyamakan', 'Mengecek apakah sama', 'Menambah', 'Membuat variabel'], corr: 1 },
-            { code: 'print(10 / 2)', q: 'Simbol (/) digunakan untuk?', opt: ['Kali', 'Tambah', 'Bagi', 'Hapus'], corr: 2 },
-            { code: 'warna = "Merah"', q: 'Tipe data "Merah" adalah?', opt: ['String (Teks)', 'Integer (Angka)', 'List', 'Boolean'], corr: 0 },
-            { code: 'x = 10\ny = 20\nprint(x > y)', q: 'Apa hasil dari x > y?', opt: ['True', 'False', '10', '20'], corr: 1 },
-            { code: 'len("Python")', q: 'Berapa jumlah huruf "Python"?', opt: ['4', '5', '6', '7'], corr: 2 },
-            { code: 'print("Susu" * 2)', q: 'Apa hasil dari "Susu" * 2?', opt: ['Susu2', 'SusuSusu', 'Susu Susu', 'Eror'], corr: 1 },
-            { code: 'import turtle', q: 'Modul "turtle" biasanya untuk?', opt: ['Masak', 'Menggambar', 'Main game', 'Belajar Matematika'], corr: 1 },
-            { code: 'x = 7', q: '7 adalah tipe data?', opt: ['String', 'Integer (Angka)', 'Float', 'Teks'], corr: 1 }
+            { code: 'input("Nama?")', q: 'Fungsi input() digunakan untuk?', opt: ['Keluar', 'Mencetak', 'Meminta data', 'Menghapus'], corr: 2 },
+            { code: 'len("Python")', q: 'Berapa jumlah huruf "Python"?', opt: ['4', '5', '6', '7'], corr: 2 }
         ];
 
         let gameQuestions = [];
@@ -198,14 +188,20 @@
         let playerName = "";
         let user = null;
 
-        // Sign In Anonim Otomatis
         const initAuth = async () => {
+            const statusDiv = document.getElementById('auth-status');
             try {
-                await signInAnonymously(auth);
+                const result = await signInAnonymously(auth);
+                user = result.user;
+                console.log("Connected as:", user.uid);
+                statusDiv.classList.add('hidden');
             } catch (e) {
-                console.error("Gagal koneksi database:", e);
+                console.error("Auth Error:", e);
+                statusDiv.innerText = "Gagal koneksi database. Periksa internet!";
+                statusDiv.classList.remove('hidden');
             }
         };
+
         initAuth();
         onAuthStateChanged(auth, (u) => { user = u; });
 
@@ -222,17 +218,16 @@
             loadQuestion();
         }
 
-        async function openAdminPanel() {
+        window.openAdminPanel = async function() {
             if (!user) { alert("Database belum siap!"); return; }
             document.getElementById('start-screen').classList.add('hidden');
             document.getElementById('admin-screen').classList.remove('hidden');
             
             const list = document.getElementById('admin-list');
-            list.innerHTML = `<p class="text-center py-10 text-gray-400">Menghubungkan ke Cloud Firestore...</p>`;
+            list.innerHTML = `<p class="text-center py-10 text-gray-400">Loading data...</p>`;
             
             try {
-                const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'));
-                const snap = await getDocs(q);
+                const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'));
                 let data = [];
                 snap.forEach(doc => data.push(doc.data()));
                 data.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
@@ -245,7 +240,7 @@
                             <div class="flex items-center gap-4">
                                 <span class="text-xs font-bold text-gray-400">${i+1}</span>
                                 <div>
-                                    <div class="font-bold text-gray-800">${player.name}</div>
+                                    <div class="font-bold text-gray-800">${player.name || 'Anonim'}</div>
                                     <div class="text-[10px] text-gray-400">${player.createdAt ? new Date(player.createdAt.seconds * 1000).toLocaleString('id-ID') : 'N/A'}</div>
                                 </div>
                             </div>
@@ -270,7 +265,7 @@
             container.innerHTML = '';
             q.opt.forEach((opt, index) => {
                 const btn = document.createElement('button');
-                btn.className = "p-5 border-2 border-gray-200 rounded-2xl text-lg font-bold hover:border-blue-400 hover:bg-blue-50 transition-all text-gray-700 bg-white";
+                btn.className = "p-5 border-2 border-gray-200 rounded-2xl text-lg font-bold hover:border-blue-400 hover:bg-blue-50 transition-all text-gray-700 bg-white shadow-sm";
                 btn.innerText = opt;
                 btn.onclick = () => checkAnswer(index, btn);
                 container.appendChild(btn);
@@ -284,16 +279,16 @@
             if (selected === q.corr) {
                 score += 10;
                 document.getElementById('score').innerText = score;
-                btn.classList.add('bg-green-500', 'text-white', 'border-green-600', 'correct-anim');
+                btn.classList.add('bg-green-500', 'text-white', 'correct-anim');
             } else {
-                btn.classList.add('bg-red-500', 'text-white', 'border-red-600', 'wrong-anim');
-                allBtns[q.corr].classList.add('bg-green-100', 'border-green-500', 'text-green-700');
+                btn.classList.add('bg-red-500', 'text-white', 'wrong-anim');
+                allBtns[q.corr].classList.add('bg-green-100', 'text-green-700');
             }
             setTimeout(() => {
                 currentIdx++;
                 if (currentIdx < 10) loadQuestion();
                 else showResult();
-            }, 1500);
+            }, 1200);
         }
 
         function showResult() {
@@ -304,7 +299,7 @@
         }
 
         window.saveAndShowLeaderboard = async function() {
-            if (!user) { alert("Koneksi database terputus!"); return; }
+            if (!user) { alert("Koneksi cloud belum siap!"); return; }
             const btn = document.getElementById('save-score-btn');
             btn.innerText = "MENYIMPAN..."; btn.disabled = true;
             try {
@@ -315,7 +310,8 @@
                 });
                 toggleLeaderboard(true);
             } catch (e) {
-                alert("Gagal simpan skor ke cloud.");
+                console.error(e);
+                alert("Gagal simpan skor.");
                 btn.innerText = "COBA LAGI"; btn.disabled = false;
             }
         }
@@ -325,19 +321,26 @@
             const list = document.getElementById('leaderboard-list');
             if (show) {
                 modal.classList.remove('hidden');
-                list.innerHTML = `<p class="text-center py-4 text-gray-400">Loading...</p>`;
+                list.innerHTML = `<p class="text-center py-4 text-gray-400 italic">Mencari data terbaik...</p>`;
                 try {
                     const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'));
                     let data = [];
                     snap.forEach(doc => data.push(doc.data()));
                     data.sort((a, b) => b.score - a.score);
-                    list.innerHTML = data.slice(0, 10).map((player, i) => `
-                        <div class="flex justify-between items-center p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl mb-2">
-                            <span class="font-bold text-gray-700">${i+1}. ${player.name}</span>
-                            <span class="bg-blue-500 text-white px-3 py-1 rounded-full font-black">${player.score}</span>
-                        </div>`).join('');
-                } catch (e) { list.innerHTML = `<p class="text-center text-red-500">Error</p>`; }
-            } else { modal.classList.add('hidden'); }
+                    
+                    if (data.length === 0) {
+                        list.innerHTML = `<p class="text-center py-4">Belum ada skor.</p>`;
+                    } else {
+                        list.innerHTML = data.slice(0, 10).map((p, i) => `
+                            <div class="flex justify-between items-center p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl mb-2">
+                                <span class="font-bold text-gray-700">${i+1}. ${p.name || 'Anonim'}</span>
+                                <span class="bg-blue-500 text-white px-3 py-1 rounded-full font-black">${p.score}</span>
+                            </div>`).join('');
+                    }
+                } catch (e) { list.innerHTML = `<p class="text-center text-red-500">Error ambil data</p>`; }
+            } else { 
+                modal.classList.add('hidden'); 
+            }
         }
     </script>
 </body>
