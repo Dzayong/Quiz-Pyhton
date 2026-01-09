@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Kids Adventure - Multiplayer & Admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
+        
+        body {
+            font-family: 'Fredoka', sans-serif;
+            background-color: #fefce8;
+        }
+
+        .python-block {
+            position: relative;
+            padding: 24px;
+            color: #1e293b;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            border-radius: 16px;
+            box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
+            min-width: 280px;
+            text-align: left;
+            border: 3px solid #1e293b;
+            background-color: white;
+            font-size: 1.2rem;
+        }
+
+        .correct-anim { animation: success 0.5s ease; }
+        .wrong-anim { animation: shake 0.5s ease; }
+
+        @keyframes success {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); background-color: #4ade80; }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-15px); }
+            75% { transform: translateX(15px); }
+        }
+
+        .modal {
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(8px);
+        }
+
+        .bg-pattern {
+            background-image: radial-gradient(#fbbf24 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .custom-scroll::-webkit-scrollbar { width: 8px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #fefce8; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: #fbbf24; border-radius: 10px; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 bg-pattern">
+
+    <!-- Start Screen -->
+    <div id="start-screen" class="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl text-center border-b-8 border-yellow-500 border-2">
+        <div class="mb-4 text-6xl">🐍</div>
+        <h1 class="text-4xl font-bold text-yellow-600 mb-2">Python Kids!</h1>
+        <p class="text-gray-500 mb-8 font-medium text-lg">Jadilah detektif kode paling hebat!</p>
+        
+        <div class="mb-6">
+            <label class="block text-left text-sm font-bold text-gray-400 mb-2 ml-1">NAMA DETEKTIF:</label>
+            <input type="text" id="player-name" placeholder="Siapa namamu?" 
+                class="w-full px-6 py-4 bg-gray-50 border-2 border-yellow-200 rounded-2xl focus:outline-none focus:border-yellow-500 text-xl text-center shadow-inner">
+        </div>
+        
+        <button onclick="handleStart()" class="w-full bg-yellow-400 hover:bg-yellow-500 text-yellow-900 font-black py-5 rounded-2xl text-2xl transition-all active:scale-95 shadow-[0_6px_0_rgb(202,138,4)]">
+            AYO MULAI!
+        </button>
+
+        <button onclick="toggleLeaderboard(true)" class="mt-4 text-yellow-700 font-bold hover:underline">
+            Lihat Papan Skor Global 🏆
+        </button>
+    </div>
+
+    <!-- Admin Panel Screen -->
+    <div id="admin-screen" class="hidden max-w-4xl w-full bg-white rounded-3xl p-8 shadow-2xl border-b-8 border-red-500 border-2">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-3xl font-black text-red-600 uppercase tracking-tighter">🛡️ Admin Panel</h2>
+            <button onclick="location.reload()" class="bg-gray-100 px-4 py-2 rounded-xl font-bold text-gray-600 hover:bg-gray-200">Keluar</button>
+        </div>
+        
+        <div class="mb-4 p-4 bg-red-50 rounded-2xl border-2 border-red-100 text-red-700 text-sm">
+            Selamat datang, Admin! Di sini Anda dapat melihat semua data peserta yang sudah mengerjakan kuis.
+        </div>
+
+        <div id="admin-list" class="max-h-[500px] overflow-y-auto custom-scroll space-y-2 pr-2">
+            <!-- Admin data rows go here -->
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" class="hidden max-w-2xl w-full bg-white rounded-3xl p-8 shadow-2xl border-b-8 border-blue-500 border-2">
+        <div class="flex justify-between items-center mb-8">
+            <div class="bg-blue-100 px-5 py-2 rounded-full text-blue-700 font-bold border-2 border-blue-200 shadow-sm">
+                🕵️ <span id="display-name">---</span>
+            </div>
+            <div class="bg-green-100 px-5 py-2 rounded-full text-green-700 font-bold border-2 border-green-200 shadow-sm">
+                ⭐ Skor: <span id="score">0</span>
+            </div>
+        </div>
+        <div class="text-center mb-10">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Analisis Kode Ini:</h2>
+            <div id="question-container" class="flex justify-center items-center py-6 min-h-[180px]"></div>
+        </div>
+        <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+        <div class="mt-8 flex justify-between items-center text-gray-400 font-bold">
+            <div class="bg-gray-100 px-4 py-1 rounded-lg">Soal <span id="current-q">1</span>/10</div>
+            <div id="hint-text" class="italic text-sm text-yellow-600">Pikirkan baik-baik!</div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Modal -->
+    <div id="leaderboard-modal" class="hidden fixed inset-0 modal flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-[40px] p-8 max-w-md w-full shadow-2xl border-8 border-blue-300">
+            <h2 class="text-3xl font-black text-center text-gray-800 mb-6 uppercase">🏆 Papan Skor</h2>
+            <div id="leaderboard-list" class="max-h-80 overflow-y-auto custom-scroll space-y-3 mb-6 pr-2"></div>
+            <button onclick="toggleLeaderboard(false)" class="w-full bg-blue-500 text-white font-bold py-4 rounded-2xl">KEMBALI</button>
+        </div>
+    </div>
+
+    <!-- Result Modal -->
+    <div id="result-modal" class="hidden fixed inset-0 modal flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-[40px] p-12 max-w-md w-full text-center shadow-2xl border-8 border-yellow-300">
+            <div id="result-emoji" class="text-8xl mb-4">🏆</div>
+            <h2 class="text-4xl font-black text-gray-800 mb-2">SELESAI!</h2>
+            <p id="final-message" class="text-gray-500 mb-8 font-semibold text-lg"></p>
+            <div class="bg-yellow-50 rounded-3xl py-6 mb-8 border-4 border-dashed border-yellow-200">
+                <span class="text-gray-400 block uppercase tracking-widest text-sm font-bold">Skor Akhir</span>
+                <span class="text-7xl font-black text-yellow-600" id="final-score">0</span>
+            </div>
+            <div class="space-y-3">
+                <button onclick="saveAndShowLeaderboard()" id="save-score-btn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-2xl text-xl transition-all shadow-[0_6px_0_rgb(22,101,52)]">
+                    LIHAT PERINGKAT 🏆
+                </button>
+                <button onclick="location.reload()" class="w-full bg-gray-200 text-gray-600 font-bold py-3 rounded-2xl">MAIN LAGI</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, getDocs, query, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+        // Ganti objek ini dengan "Firebase Config" dari dashboard Firebase anda
+        const firebaseConfig = {
+            apiKey: "", 
+            authDomain: "",
+            projectId: "",
+            storageBucket: "",
+            messagingSenderId: "",
+            appId: ""
+        };
+
+        // Fallback untuk lingkungan preview
+        const actualConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : firebaseConfig;
+
+        const app = initializeApp(actualConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'python-kids-quiz-v1';
+
+        const allQuestions = [
+            { code: 'print("Halo")', q: 'Apa hasil kode di atas?', opt: ['Halo', 'print', 'Halo Python', 'Kosong'], corr: 0 },
+            { code: 'nama = "Budi"', q: 'Apa isi dari variabel "nama"?', opt: ['nama', 'Budi', '""', 'Halo'], corr: 1 },
+            { code: 'x = 5 + 3', q: 'Berapakah nilai x?', opt: ['5', '3', '8', '53'], corr: 2 },
+            { code: 'x = 10 - 4', q: 'Berapakah nilai x?', opt: ['6', '14', '4', '10'], corr: 0 },
+            { code: 'if 10 > 5:', q: 'Apakah 10 lebih besar dari 5?', opt: ['Ya (True)', 'Tidak (False)', 'Mungkin', 'Salah Semua'], corr: 0 },
+            { code: 'angka = [1, 2, 3]', q: 'Apa nama tipe data ini?', opt: ['String', 'Integer', 'List (Daftar)', 'Print'], corr: 2 },
+            { code: '# Ini komentar', q: 'Apakah baris kode ini dijalankan?', opt: ['Ya', 'Tidak', 'Hanya di pagi hari', 'Eror'], corr: 1 },
+            { code: 'a = "10"\nb = "5"\nprint(a + b)', q: 'Jika a dan b adalah teks, hasil a+b?', opt: ['15', '105', '510', 'Eror'], corr: 1 },
+            { code: 'input("Siapa namamu?")', q: 'Fungsi input() digunakan untuk?', opt: ['Keluar program', 'Mencetak teks', 'Meminta jawaban user', 'Menghapus data'], corr: 2 },
+            { code: 'for i in range(3):', q: 'Berapa kali kode di dalamnya diulang?', opt: ['1 kali', '2 kali', '3 kali', '0 kali'], corr: 2 },
+            { code: 'print(5 * 2)', q: 'Simbol (*) dalam Python artinya?', opt: ['Tambah', 'Kali', 'Kurang', 'Bintang'], corr: 1 },
+            { code: 'apel = 3\napel = 5', q: 'Berapa jumlah apel sekarang?', opt: ['3', '5', '8', '0'], corr: 1 },
+            { code: 'if 2 == 2:', q: 'Simbol (==) digunakan untuk?', opt: ['Menyamakan', 'Mengecek apakah sama', 'Menambah', 'Membuat variabel'], corr: 1 },
+            { code: 'print(10 / 2)', q: 'Simbol (/) digunakan untuk?', opt: ['Kali', 'Tambah', 'Bagi', 'Hapus'], corr: 2 },
+            { code: 'warna = "Merah"', q: 'Tipe data "Merah" adalah?', opt: ['String (Teks)', 'Integer (Angka)', 'List', 'Boolean'], corr: 0 },
+            { code: 'x = 10\ny = 20\nprint(x > y)', q: 'Apa hasil dari x > y?', opt: ['True', 'False', '10', '20'], corr: 1 },
+            { code: 'len("Python")', q: 'Berapa jumlah huruf "Python"?', opt: ['4', '5', '6', '7'], corr: 2 },
+            { code: 'print("Susu" * 2)', q: 'Apa hasil dari "Susu" * 2?', opt: ['Susu2', 'SusuSusu', 'Susu Susu', 'Eror'], corr: 1 },
+            { code: 'import turtle', q: 'Modul "turtle" biasanya untuk?', opt: ['Masak', 'Menggambar', 'Main game', 'Belajar Matematika'], corr: 1 },
+            { code: 'x = 7', q: '7 adalah tipe data?', opt: ['String', 'Integer (Angka)', 'Float', 'Teks'], corr: 1 }
+        ];
+
+        let gameQuestions = [];
+        let currentIdx = 0;
+        let score = 0;
+        let playerName = "";
+        let user = null;
+
+        // Sign In Anonim Otomatis
+        const initAuth = async () => {
+            try {
+                await signInAnonymously(auth);
+            } catch (e) {
+                console.error("Gagal koneksi database:", e);
+            }
+        };
+        initAuth();
+        onAuthStateChanged(auth, (u) => { user = u; });
+
+        window.handleStart = function() {
+            const input = document.getElementById('player-name').value.trim();
+            if (input === '1921310012') { openAdminPanel(); return; }
+            if (!input || input.length < 3) { alert("Masukkan nama (min. 3 huruf)!"); return; }
+            
+            playerName = input;
+            gameQuestions = [...allQuestions].sort(() => Math.random() - 0.5).slice(0, 10);
+            document.getElementById('display-name').innerText = playerName;
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('game-screen').classList.remove('hidden');
+            loadQuestion();
+        }
+
+        async function openAdminPanel() {
+            if (!user) { alert("Database belum siap!"); return; }
+            document.getElementById('start-screen').classList.add('hidden');
+            document.getElementById('admin-screen').classList.remove('hidden');
+            
+            const list = document.getElementById('admin-list');
+            list.innerHTML = `<p class="text-center py-10 text-gray-400">Menghubungkan ke Cloud Firestore...</p>`;
+            
+            try {
+                const q = query(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'));
+                const snap = await getDocs(q);
+                let data = [];
+                snap.forEach(doc => data.push(doc.data()));
+                data.sort((a, b) => (b.createdAt?.seconds || 0) - (a.createdAt?.seconds || 0));
+
+                if (data.length === 0) {
+                    list.innerHTML = `<p class="text-center py-10">Belum ada data siswa.</p>`;
+                } else {
+                    list.innerHTML = data.map((player, i) => `
+                        <div class="flex justify-between items-center p-4 bg-gray-50 border-2 border-gray-100 rounded-2xl mb-2">
+                            <div class="flex items-center gap-4">
+                                <span class="text-xs font-bold text-gray-400">${i+1}</span>
+                                <div>
+                                    <div class="font-bold text-gray-800">${player.name}</div>
+                                    <div class="text-[10px] text-gray-400">${player.createdAt ? new Date(player.createdAt.seconds * 1000).toLocaleString('id-ID') : 'N/A'}</div>
+                                </div>
+                            </div>
+                            <div class="bg-blue-600 text-white px-4 py-1 rounded-xl font-black">${player.score}</div>
+                        </div>
+                    `).join('');
+                }
+            } catch (e) {
+                list.innerHTML = `<p class="text-center text-red-500 py-10 font-bold">Error: ${e.message}</p>`;
+            }
+        }
+
+        function loadQuestion() {
+            const q = gameQuestions[currentIdx];
+            document.getElementById('current-q').innerText = currentIdx + 1;
+            document.getElementById('question-container').innerHTML = `
+                <div class="flex flex-col items-center gap-4 w-full">
+                    <p class="text-gray-500 font-bold text-center px-4">${q.q}</p>
+                    <div class="python-block"><span class="text-blue-500">>>></span> ${q.code}</div>
+                </div>`;
+            const container = document.getElementById('options-container');
+            container.innerHTML = '';
+            q.opt.forEach((opt, index) => {
+                const btn = document.createElement('button');
+                btn.className = "p-5 border-2 border-gray-200 rounded-2xl text-lg font-bold hover:border-blue-400 hover:bg-blue-50 transition-all text-gray-700 bg-white";
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(index, btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, btn) {
+            const q = gameQuestions[currentIdx];
+            const allBtns = document.querySelectorAll('#options-container button');
+            allBtns.forEach(b => b.disabled = true);
+            if (selected === q.corr) {
+                score += 10;
+                document.getElementById('score').innerText = score;
+                btn.classList.add('bg-green-500', 'text-white', 'border-green-600', 'correct-anim');
+            } else {
+                btn.classList.add('bg-red-500', 'text-white', 'border-red-600', 'wrong-anim');
+                allBtns[q.corr].classList.add('bg-green-100', 'border-green-500', 'text-green-700');
+            }
+            setTimeout(() => {
+                currentIdx++;
+                if (currentIdx < 10) loadQuestion();
+                else showResult();
+            }, 1500);
+        }
+
+        function showResult() {
+            document.getElementById('game-screen').classList.add('hidden');
+            document.getElementById('result-modal').classList.remove('hidden');
+            document.getElementById('final-score').innerText = score;
+            document.getElementById('final-message').innerText = `Permainan selesai, ${playerName}!`;
+        }
+
+        window.saveAndShowLeaderboard = async function() {
+            if (!user) { alert("Koneksi database terputus!"); return; }
+            const btn = document.getElementById('save-score-btn');
+            btn.innerText = "MENYIMPAN..."; btn.disabled = true;
+            try {
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'), {
+                    name: playerName,
+                    score: score,
+                    createdAt: serverTimestamp()
+                });
+                toggleLeaderboard(true);
+            } catch (e) {
+                alert("Gagal simpan skor ke cloud.");
+                btn.innerText = "COBA LAGI"; btn.disabled = false;
+            }
+        }
+
+        window.toggleLeaderboard = async function(show) {
+            const modal = document.getElementById('leaderboard-modal');
+            const list = document.getElementById('leaderboard-list');
+            if (show) {
+                modal.classList.remove('hidden');
+                list.innerHTML = `<p class="text-center py-4 text-gray-400">Loading...</p>`;
+                try {
+                    const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'leaderboard'));
+                    let data = [];
+                    snap.forEach(doc => data.push(doc.data()));
+                    data.sort((a, b) => b.score - a.score);
+                    list.innerHTML = data.slice(0, 10).map((player, i) => `
+                        <div class="flex justify-between items-center p-4 bg-gray-50 border-2 border-gray-200 rounded-2xl mb-2">
+                            <span class="font-bold text-gray-700">${i+1}. ${player.name}</span>
+                            <span class="bg-blue-500 text-white px-3 py-1 rounded-full font-black">${player.score}</span>
+                        </div>`).join('');
+                } catch (e) { list.innerHTML = `<p class="text-center text-red-500">Error</p>`; }
+            } else { modal.classList.add('hidden'); }
+        }
+    </script>
+</body>
+</html>
