@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
+
+body {
+    font-family: 'Fredoka', sans-serif;
+    background-color: #fefce8;
+}
+
+.python-block {
+    padding: 24px;
+    color: #1e293b;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    border-radius: 16px;
+    box-shadow: 6px 6px 0px rgba(0,0,0,0.1);
+    min-width: 280px;
+    border: 3px solid #1e293b;
+    background-color: white;
+    font-size: 1.2rem;
+}
+
+.bg-pattern {
+    background-image: radial-gradient(#fbbf24 1px, transparent 1px);
+    background-size: 20px 20px;
+}
+
+.modal-overlay {
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+/* Animations */
+.correct-anim { animation: success 0.5s ease; }
+.wrong-anim { animation: shake 0.5s ease; }
+
+@keyframes success {
+    50% { transform: scale(1.1); background-color: #4ade80; }
+}
+
+@keyframes shake {
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.custom-scroll::-webkit-scrollbar { width: 8px; }
+.custom-scroll::-webkit-scrollbar-thumb { background: #fbbf24; border-radius: 10px; }
+
+#explanation-box {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.correct-anim { animation: bounce 0.5s; }
+.wrong-anim { animation: shake 0.4s; }
+
+@keyframes bounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}

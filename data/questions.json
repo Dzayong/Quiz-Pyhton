@@ -1,0 +1,352 @@
+[
+    { 
+        "code": "print('Halo')", 
+        "q": "Apa hasil kode di atas?", 
+        "opt": ["Halo", "print", "Halo Python", "Kosong"], 
+        "corr": 0,
+        "hint": "Fungsi print() gunanya untuk menampilkan teks yang ada di dalam kurung ke layar."
+    },
+    { 
+        "code": "nama = 'Budi'", 
+        "q": "Apa isi dari variabel 'nama'?", 
+        "opt": ["nama", "Budi", "''", "Halo"], 
+        "corr": 1,
+        "hint": "Variabel itu seperti kotak. Di sini, kotak bernama 'nama' kita isi dengan teks 'Budi'."
+    },
+    { 
+        "code": "x = 5 + 3", 
+        "q": "Berapakah nilai x?", 
+        "opt": ["5", "3", "8", "53"], 
+        "corr": 2,
+        "hint": "Python sangat pintar matematika! 5 ditambah 3 hasilnya adalah 8."
+    },
+    { 
+        "code": "x = 10 - 4", 
+        "q": "Berapakah nilai x?", 
+        "opt": ["6", "14", "4", "10"], 
+        "corr": 0,
+        "hint": "Pengurangan biasa! 10 dikurangi 4 adalah 6."
+    },
+    { 
+        "code": "if 10 > 5:", 
+        "q": "Apakah 10 lebih besar dari 5?", 
+        "opt": ["Ya (True)", "Tidak (False)", "Mungkin", "Salah"], 
+        "corr": 0,
+        "hint": "Simbol (>) artinya lebih besar. Karena 10 memang lebih besar dari 5, jawabannya Ya atau True."
+    },
+    { 
+        "code": "angka = [1, 2]", 
+        "q": "Apa nama tipe data ini?", 
+        "opt": ["String", "Integer", "List", "Float"], 
+        "corr": 2,
+        "hint": "Tanda kurung siku [] menandakan sebuah List, yaitu kumpulan data yang berurutan."
+    },
+    { 
+        "code": "# Komentar", 
+        "q": "Apakah baris ini dijalankan komputer?", 
+        "opt": ["Ya", "Tidak", "Kadang", "Eror"], 
+        "corr": 1,
+        "hint": "Tanda pagar (#) digunakan untuk komentar. Komputer akan mengabaikannya dan tidak menjadikannya perintah."
+    },
+    { 
+        "code": "print(5 * 2)", 
+        "q": "Simbol (*) artinya?", 
+        "opt": ["Tambah", "Kali", "Kurang", "Bagi"], 
+        "corr": 1,
+        "hint": "Dalam bahasa pemrograman, tanda bintang (*) digunakan untuk melakukan perkalian."
+    },
+    { 
+        "code": "input('?')", 
+        "q": "Fungsi input() untuk?", 
+        "opt": ["Keluar", "Cetak", "Minta data", "Hapus"], 
+        "corr": 2,
+        "hint": "Fungsi input() digunakan agar pemain bisa mengetikkan sesuatu lewat keyboard."
+    },
+    { 
+        "code": "len('Python')", 
+        "q": "Berapa jumlah huruf 'Python'?", 
+        "opt": ["4", "5", "6", "7"], 
+        "corr": 2,
+        "hint": "Fungsi len() adalah singkatan dari 'length' yang artinya menghitung panjang atau jumlah karakter."
+    },
+    { 
+        "code": "a = 2\nb = 2\nprint(a + b)", 
+        "q": "Berapa hasil penjumlahan di atas?", 
+        "opt": ["22", "4", "2", "0"], 
+        "corr": 1, 
+        "hint": "Variabel a bernilai 2 dan b bernilai 2. Jika ditambah, maka 2 + 2 = 4."
+    },
+    { 
+        "code": "warna = 'Merah'", 
+        "q": "Tipe data 'Merah' adalah...", 
+        "opt": ["String (Teks)", "Integer (Angka)", "Boolean", "List"], 
+        "corr": 0,
+        "hint": "Setiap data yang diapit tanda kutip ('...') disebut sebagai String atau teks."
+    },
+    { 
+        "code": "print(10 / 2)", 
+        "q": "Hasil dari 10 dibagi 2 adalah...", 
+        "opt": ["2", "5", "10", "20"], 
+        "corr": 1,
+        "hint": "Tanda garis miring (/) digunakan untuk pembagian. 10 dibagi 2 adalah 5."
+    },
+    { 
+        "code": "hewan = ['Kucing', 'Anjing']", 
+        "q": "Berapa jumlah hewan di dalam list?", 
+        "opt": ["1", "2", "3", "0"], 
+        "corr": 1,
+        "hint": "Ada dua kata di dalam list tersebut, yaitu 'Kucing' dan 'Anjing'."
+    },
+    { 
+        "code": "if 3 == 3:", 
+        "q": "Simbol (==) artinya?", 
+        "opt": ["Sama dengan", "Berbeda", "Lebih besar", "Tambah"], 
+        "corr": 0,
+        "hint": "Satu tanda (=) untuk mengisi kotak, dua tanda (==) untuk membandingkan apakah nilainya sama."
+    },
+    { 
+        "code": "x = 100", 
+        "q": "Tipe data 100 adalah...", 
+        "opt": ["String", "List", "Integer (Angka)", "Boolean"], 
+        "corr": 2,
+        "hint": "Angka bulat tanpa tanda kutip disebut Integer (int)."
+    },
+    { 
+        "code": "print('A' + 'B')", 
+        "q": "Hasil dari 'A' + 'B' adalah...", 
+        "opt": ["AB", "A B", "C", "Eror"], 
+        "corr": 0,
+        "hint": "Jika dua String ditambah (+), mereka akan menempel menjadi satu kata."
+    },
+    { 
+        "code": "print('Halo' * 2)", 
+        "q": "Hasil dari 'Halo' dikali 2 adalah...", 
+        "opt": ["Halo2", "HaloHalo", "Halo Halo", "Eror"], 
+        "corr": 1,
+        "hint": "String dikali (*) angka akan menduplikat atau mengulang teks tersebut."
+    },
+    { 
+        "code": "x = 7\ny = 3\nprint(x - y)", 
+        "q": "Berapa hasil x dikurangi y?", 
+        "opt": ["10", "4", "3", "7"], 
+        "corr": 1,
+        "hint": "Nilai 7 dikurangi 3 adalah 4."
+    },
+    { 
+        "code": "buah = []", 
+        "q": "List 'buah' di atas berisi...", 
+        "opt": ["Satu buah", "Kosong", "Banyak buah", "Eror"], 
+        "corr": 1,
+        "hint": "Tanda kurung siku yang tidak ada isinya [] disebut sebagai list kosong."
+    },
+    { 
+        "code": "x = True", 
+        "q": "Tipe data True/False disebut...", 
+        "opt": ["String", "Integer", "Boolean", "List"], 
+        "corr": 2,
+        "hint": "Boolean adalah tipe data logika yang isinya hanya ada dua: Benar (True) atau Salah (False)."
+    },
+    { 
+        "code": "print(3 > 10)", 
+        "q": "Hasil dari 3 lebih besar dari 10?", 
+        "opt": ["True", "False", "None", "Eror"], 
+        "corr": 1,
+        "hint": "Karena 3 lebih kecil dari 10, maka pernyataan '3 > 10' adalah salah (False)."
+    },
+    { 
+        "code": "nama = input('Siapa?')", 
+        "q": "Jika kita mengetik 'Ali', apa isi 'nama'?", 
+        "opt": ["Siapa", "Ali", "Input", "Kosong"], 
+        "corr": 1,
+        "hint": "Variabel 'nama' akan menyimpan apapun yang diketikkan oleh pengguna."
+    },
+    { 
+        "code": "print(2 + 3 * 2)", 
+        "q": "Ingat perkalian dulu! Berapa hasilnya?", 
+        "opt": ["10", "8", "7", "5"], 
+        "corr": 2,
+        "hint": "Dalam matematika Python, perkalian (3*2=6) dikerjakan dulu, baru ditambah 2 (6+2=7)."
+    },
+    { 
+        "code": "x = 10\nx = 5\nprint(x)", 
+        "q": "Nilai x yang terakhir adalah...", 
+        "opt": ["10", "5", "15", "0"], 
+        "corr": 1,
+        "hint": "Variabel bisa berubah nilainya. Nilai yang terakhir dimasukkan (5) akan menggantikan nilai lama (10)."
+    },
+    { 
+        "code": "print('10' + '5')", 
+        "q": "Ini teks, bukan angka. Hasilnya?", 
+        "opt": ["15", "105", "10 5", "510"], 
+        "corr": 1,
+        "hint": "Karena ada tanda kutip, '10' dan '5' dianggap teks. Jika ditambah, mereka hanya menempel."
+    },
+    { 
+        "code": "score = 0\nscore = score + 1", 
+        "q": "Berapa nilai score sekarang?", 
+        "opt": ["0", "1", "2", "score1"], 
+        "corr": 1,
+        "hint": "Mula-mula score 0, lalu ditambah 1, maka score sekarang menjadi 1."
+    },
+    { 
+        "code": "print(len('Hi'))", 
+        "q": "Berapa panjang kata 'Hi'?", 
+        "opt": ["1", "2", "3", "4"], 
+        "corr": 1,
+        "hint": "Kata 'Hi' terdiri dari dua huruf, yaitu 'H' dan 'i'."
+    },
+    { 
+        "code": "if 5 < 2:\n  print('A')\nelse:\n  print('B')", 
+        "q": "Apa yang akan muncul di layar?", 
+        "opt": ["A", "B", "AB", "Kosong"], 
+        "corr": 1,
+        "hint": "Karena 5 < 2 itu salah, maka komputer menjalankan perintah di bawah 'else', yaitu cetak 'B'."
+    },
+    { 
+        "code": "print('Python'[0])", 
+        "q": "Huruf pertama (indeks 0) dari 'Python'?", 
+        "opt": ["P", "y", "t", "n"], 
+        "corr": 0,
+        "hint": "Dalam Python, urutan atau indeks dimulai dari angka 0. Jadi urutan ke-0 adalah huruf pertama."
+    },
+    { 
+        "code": "list = [10, 20, 30]", 
+        "q": "Angka 30 ada di urutan (indeks) ke...", 
+        "opt": ["0", "1", "2", "3"], 
+        "corr": 2,
+        "hint": "Urutannya adalah: 10 (indeks 0), 20 (indeks 1), dan 30 (indeks 2)."
+    },
+    { 
+        "code": "print(type(5))", 
+        "q": "Apa tipe dari angka 5?", 
+        "opt": ["int", "str", "list", "bool"], 
+        "corr": 0,
+        "hint": "Fungsi type() memberi tahu kita jenis datanya. 5 adalah angka bulat atau 'int' (integer)."
+    },
+    { 
+        "code": "print(type('5'))", 
+        "q": "Apa tipe dari '5' (pakai tanda kutip)?", 
+        "opt": ["int", "str", "list", "bool"], 
+        "corr": 1,
+        "hint": "Meskipun angka, karena pakai tanda kutip maka tipenya adalah 'str' (string/teks)."
+    },
+    { 
+        "code": "x = 10 % 3", 
+        "q": "Sisa bagi 10 dibagi 3 adalah...", 
+        "opt": ["1", "2", "3", "0"], 
+        "corr": 0,
+        "hint": "Simbol (%) mencari sisa hasil bagi. 10 dibagi 3 dapat 3, sisanya adalah 1."
+    },
+    { 
+        "code": "a = 5\nb = a\nprint(b)", 
+        "q": "Berapa nilai b?", 
+        "opt": ["a", "5", "10", "Eror"], 
+        "corr": 1,
+        "hint": "Jika b = a, berarti b mengambil nilai yang sama dengan a, yaitu 5."
+    },
+    { 
+        "code": "print('Halo'.lower())", 
+        "q": "Fungsi lower() membuat teks jadi...", 
+        "opt": ["Besar semua", "Kecil semua", "Terbalik", "Hilang"], 
+        "corr": 1,
+        "hint": "'Lower' artinya bawah atau kecil. Fungsi ini mengecilkan semua huruf kapital."
+    },
+    { 
+        "code": "print('halo'.upper())", 
+        "q": "Fungsi upper() membuat teks jadi...", 
+        "opt": ["Besar semua", "Kecil semua", "Warna-warni", "Eror"], 
+        "corr": 0,
+        "hint": "'Upper' artinya atas atau besar. Fungsi ini membuat semua huruf menjadi huruf kapital."
+    },
+    { 
+        "code": "while False:\n  print('Hi')", 
+        "q": "Berapa kali 'Hi' akan muncul?", 
+        "opt": ["Selamanya", "1 kali", "0 kali", "10 kali"], 
+        "corr": 2,
+        "hint": "While akan jalan jika kondisinya True. Karena kondisinya False, perintah di dalamnya tidak jalan sama sekali."
+    },
+    { 
+        "code": "for i in [1, 2]:\n  print('Ok')", 
+        "q": "Berapa kali 'Ok' muncul?", 
+        "opt": ["1", "2", "3", "0"], 
+        "corr": 1,
+        "hint": "Perulangan (for) akan berjalan sebanyak jumlah benda di dalam list. Karena ada 2 angka, maka muncul 2 kali."
+    },
+    { 
+        "code": "print(10 == 10)", 
+        "q": "Apakah 10 sama dengan 10?", 
+        "opt": ["True", "False", "None", "Maybe"], 
+        "corr": 0,
+        "hint": "Karena 10 memang sama nilainya dengan 10, maka hasilnya adalah Benar (True)."
+    },
+    { 
+        "code": "print(10 != 5)", 
+        "q": "Simbol (!=) artinya...", 
+        "opt": ["Sama dengan", "Tidak sama dengan", "Lebih besar", "Bukan"], 
+        "corr": 1,
+        "hint": "Tanda seru dan sama dengan (!=) digunakan untuk mengecek apakah dua nilai tersebut 'Tidak Sama'."
+    },
+    { 
+        "code": "x = '10'\ny = int(x)", 
+        "q": "Fungsi int() mengubah teks jadi...", 
+        "opt": ["Angka", "Huruf", "List", "Gambar"], 
+        "corr": 0,
+        "hint": "Fungsi int() bisa mengubah teks berisi angka menjadi angka sungguhan agar bisa dihitung."
+    },
+    { 
+        "code": "print(min(5, 2, 8))", 
+        "q": "Fungsi min() mencari yang paling...", 
+        "opt": ["Besar", "Kecil", "Tengah", "Banyak"], 
+        "corr": 1,
+        "hint": "Min adalah singkatan dari Minimum, yang artinya mencari nilai paling kecil dalam deretan angka."
+    },
+    { 
+        "code": "print(max(5, 2, 8))", 
+        "q": "Fungsi max() mencari yang paling...", 
+        "opt": ["Besar", "Kecil", "Sedikit", "Eror"], 
+        "corr": 0,
+        "hint": "Max adalah singkatan dari Maximum, yang artinya mencari nilai paling besar."
+    },
+    { 
+        "code": "import math", 
+        "q": "Kata 'import' digunakan untuk...", 
+        "opt": ["Menghapus", "Menambah modul/alat", "Mencetak", "Keluar"], 
+        "corr": 1,
+        "hint": "Import seperti meminjam kotak perkakas tambahan (modul) agar Python punya kemampuan baru."
+    },
+    { 
+        "code": "x = 4 ** 2", 
+        "q": "Simbol (**) artinya pangkat. 4 pangkat 2?", 
+        "opt": ["8", "16", "6", "42"], 
+        "corr": 1,
+        "hint": "4 pangkat 2 artinya 4 dikali 4, hasilnya adalah 16."
+    },
+    { 
+        "code": "print('A', 'B')", 
+        "q": "Apa pemisah otomatis antara 'A' dan 'B'?", 
+        "opt": ["Koma", "Spasi", "Titik", "Tidak ada"], 
+        "corr": 1,
+        "hint": "Saat kita memberi tanda koma di fungsi print(), Python otomatis memberikan spasi di antaranya."
+    },
+    { 
+        "code": "def halo():\n  print('Hi')", 
+        "q": "'def' digunakan untuk membuat...", 
+        "opt": ["Variabel", "Fungsi", "List", "Angka"], 
+        "corr": 1,
+        "hint": "Def adalah singkatan dari Define. Digunakan untuk membuat 'Fungsi' atau kumpulan perintah sendiri."
+    },
+    { 
+        "code": "x = None", 
+        "q": "None dalam Python artinya...", 
+        "opt": ["Satu", "Kosong/Tidak ada", "Banyak", "Eror"], 
+        "corr": 1,
+        "hint": "None adalah nilai khusus yang digunakan untuk menyatakan bahwa variabel itu kosong atau tidak punya isi."
+    },
+    { 
+        "code": "print('S' in 'Sapi')", 
+        "q": "Apakah huruf 'S' ada di dalam 'Sapi'?", 
+        "opt": ["True", "False", "Mungkin", "Eror"], 
+        "corr": 0,
+        "hint": "Kata kunci 'in' mengecek apakah suatu karakter ada di dalam sebuah teks. 'S' ada di kata 'Sapi'."
+    }
+]
