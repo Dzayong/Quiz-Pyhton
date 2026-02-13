@@ -2,18 +2,44 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Kids Adventure</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Python Kids Master 🚀</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Fredoka', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen flex items-center justify-center p-4 bg-pattern">
+<body class="bg-indigo-50 min-h-screen font-sans selection:bg-indigo-200">
 
-    <div id="app-container" class="w-full flex justify-center">
-        <div class="text-yellow-600 font-bold animate-pulse">Memuat Petualangan...</div>
+    <main id="app-container" class="relative z-10 flex justify-center items-center min-h-screen p-4 overflow-x-hidden">
+        <div class="flex flex-col items-center gap-4 animate-pulse">
+            <div class="text-6xl">🐍</div>
+            <p class="text-indigo-900 font-black tracking-widest uppercase text-sm">Menyiapkan Lab Python...</p>
+        </div>
+    </main>
+
+    <div id="modal-container" class="fixed inset-0 z-50 pointer-events-none">
+        </div>
+
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none opacity-20 z-0 overflow-hidden">
+        <div class="absolute top-10 left-10 text-4xl transform -rotate-12">💻</div>
+        <div class="absolute bottom-10 right-10 text-4xl transform rotate-12">✨</div>
+        <div class="absolute top-1/4 right-20 text-4xl transform rotate-45">💡</div>
+        <div class="absolute bottom-1/4 left-20 text-4xl transform -rotate-45">🔥</div>
     </div>
-
-    <div id="modal-container"></div>
 
     <script type="module" src="script.js"></script>
 </body>

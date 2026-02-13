@@ -1,0 +1,136 @@
+<div class="max-w-6xl w-full flex flex-col gap-6 animate-fadeIn p-4 pb-20">
+    <div class="bg-indigo-900 text-white p-6 md:p-8 rounded-[2.5rem] shadow-xl flex flex-col md:flex-row justify-between items-center border-b-8 border-indigo-700 gap-4">
+        <div>
+            <h1 class="text-3xl font-black tracking-tighter flex items-center gap-3">
+                <span class="bg-indigo-800 p-2 rounded-2xl">🎮</span> PUSAT KENDALI
+            </h1>
+            <p class="text-indigo-300 font-medium opacity-80 mt-1">Pantau & Kelola Aktivitas Belajar Murid</p>
+        </div>
+        <div class="flex gap-3">
+            <div class="bg-indigo-800/50 px-5 py-3 rounded-2xl border border-indigo-700 text-center">
+                <span class="text-[10px] font-black text-indigo-300 uppercase block mb-1">Status Server</span>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-green-500 rounded-full animate-ping"></span>
+                    <span class="font-bold text-green-400 text-sm">ONLINE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <div class="lg:col-span-4 flex flex-col gap-6">
+            
+            <div class="bg-white p-6 rounded-[2rem] shadow-lg border-2 border-indigo-50">
+                <h3 class="text-indigo-900 font-black text-xs uppercase mb-4 tracking-widest flex items-center gap-2">
+                    <span class="bg-indigo-600 text-white w-6 h-6 flex items-center justify-center rounded-lg text-[10px]">01</span> 
+                    MANAGEMENT ROOM
+                </h3>
+                <div class="flex flex-col gap-3">
+                    <div class="relative">
+                        <input type="text" id="admin-room-id" 
+                            class="w-full p-4 pl-12 border-4 border-indigo-50 rounded-2xl font-black text-indigo-600 uppercase focus:border-indigo-200 outline-none transition-all placeholder:text-gray-300"
+                            placeholder="Ketik ID Room...">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-xl">🏠</span>
+                    </div>
+                    <button onclick="adminCreateRoom()" 
+                        class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-2xl font-black shadow-[0_6px_0_rgb(49,46,129)] active:shadow-none active:translate-y-1 transition-all flex items-center justify-center gap-2">
+                        AKTIFKAN ROOM 🚀
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-[2rem] shadow-lg border-2 border-indigo-50">
+                <h3 class="text-indigo-900 font-black text-xs uppercase mb-4 tracking-widest flex items-center gap-2">
+                    <span class="bg-indigo-600 text-white w-6 h-6 flex items-center justify-center rounded-lg text-[10px]">02</span> 
+                    KONTROL MODE
+                </h3>
+                <div class="grid grid-cols-1 gap-3">
+                    <button onclick="adminSetMode('B')" 
+                        class="group text-left bg-emerald-500 hover:bg-emerald-600 text-white p-4 rounded-2xl font-bold transition-all shadow-[0_6px_0_rgb(5,150,105)] active:shadow-none active:translate-y-1">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg">🏁 MARATON</span>
+                            <span class="opacity-0 group-hover:opacity-100 transition-opacity">✅</span>
+                        </div>
+                        <span class="text-[10px] opacity-80 font-medium block mt-1">Murid bebas mengerjakan sendiri</span>
+                    </button>
+                    
+                    <button onclick="adminSetMode('A')" 
+                        class="group text-left bg-amber-500 hover:bg-amber-600 text-white p-4 rounded-2xl font-bold transition-all shadow-[0_6_0_rgb(217,119,6)] active:shadow-none active:translate-y-1">
+                        <div class="flex justify-between items-center">
+                            <span class="text-lg">👨‍🏫 TERPIMPIN</span>
+                            <span class="opacity-0 group-hover:opacity-100 transition-opacity">🎮</span>
+                        </div>
+                        <span class="text-[10px] opacity-80 font-medium block mt-1">Admin yang memindahkan soal</span>
+                    </button>
+
+                    <div id="step-control" class="hidden mt-2 p-4 bg-indigo-50 rounded-2xl border-2 border-indigo-100 border-dashed animate-slideUp">
+                        <button onclick="adminNextStep()" 
+                            class="w-full bg-indigo-900 text-white py-4 rounded-xl font-black hover:bg-black shadow-lg flex justify-center items-center gap-2">
+                            NEXT SOAL ➔
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 p-6 rounded-[2rem] shadow-xl border-t-4 border-indigo-500">
+                <h3 class="text-white font-black text-xs uppercase mb-4 tracking-widest flex items-center gap-2">
+                    <span class="text-indigo-400">⚡</span> QUICK ADD SOAL
+                </h3>
+                <textarea id="new-question-json" 
+                    class="w-full h-24 p-4 text-[10px] font-mono border-none rounded-xl bg-slate-800 text-green-400 outline-none focus:ring-2 ring-indigo-500"
+                    placeholder='{"q": "...", "code": "...", "opt": [...], "corr": 0}'></textarea>
+                <button onclick="saveNewQuestion()" 
+                    class="w-full mt-3 bg-indigo-500 hover:bg-indigo-400 text-white py-3 rounded-xl font-bold text-xs transition-all">
+                    INJECT SOAL BARU
+                </button>
+            </div>
+        </div>
+
+        <div class="lg:col-span-8 flex flex-col gap-6">
+            
+            <div class="bg-white p-6 md:p-8 rounded-[3rem] shadow-xl border-2 border-indigo-50 flex-1">
+                <div class="flex justify-between items-center mb-6">
+                    <div>
+                        <h3 class="text-2xl font-black text-indigo-900 flex items-center gap-2">
+                            🏆 LIVE ROOM <span id="active-room-label" class="text-indigo-400 text-sm font-medium">#NONE</span>
+                        </h3>
+                    </div>
+                    <div class="px-4 py-2 bg-indigo-50 text-indigo-600 rounded-full font-black text-[10px] tracking-widest border border-indigo-100">
+                        SCOREBOARD
+                    </div>
+                </div>
+
+                <div id="admin-live-score" class="space-y-3 overflow-y-auto max-h-[300px] pr-2 custom-scrollbar min-h-[150px]">
+                    <div class="text-center py-10 text-gray-300 italic">Menunggu pemain bergabung...</div>
+                </div>
+            </div>
+
+            <div class="bg-emerald-900 p-6 md:p-8 rounded-[3rem] shadow-xl border-b-8 border-emerald-950">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-xl font-black text-emerald-100 flex items-center gap-2">
+                        🏃 PEMAIN SOLO <span class="text-emerald-400 text-xs font-bold bg-emerald-800/50 px-3 py-1 rounded-full">REAL-TIME</span>
+                    </h3>
+                    <span class="text-emerald-400 text-[10px] font-bold animate-pulse">● LIVE MONITOR</span>
+                </div>
+
+                <div id="admin-solo-monitor" class="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar-emerald">
+                    <div class="col-span-2 text-center py-6 text-emerald-700 font-medium">Belum ada murid yang main solo</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<style>
+    /* Styling khusus Scrollbar Indigo */
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #e0e7ff; border-radius: 10px; }
+    
+    /* Styling khusus Scrollbar Emerald */
+    .custom-scrollbar-emerald::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar-emerald::-webkit-scrollbar-track { background: transparent; }
+    .custom-scrollbar-emerald::-webkit-scrollbar-thumb { background: #065f46; border-radius: 10px; }
+</style>

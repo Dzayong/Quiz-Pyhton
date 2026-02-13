@@ -1,6 +1,92 @@
-<div class="max-w-md w-full bg-white rounded-3xl p-8 shadow-2xl text-center border-b-8 border-yellow-500 border-2">
-    <div class="text-6xl mb-4">🐍</div>
-    <h1 class="text-4xl font-bold text-yellow-600 mb-6">Python Kids!</h1>
-    <input type="text" id="player-name" placeholder="Nama Detektif?" class="w-full p-4 bg-gray-50 border-2 border-yellow-200 rounded-2xl text-center mb-6">
-    <button onclick="handleStart()" class="w-full bg-yellow-400 py-4 rounded-2xl font-black text-xl shadow-[0_5px_0_#ca8a04]">AYO MULAI!</button>
+<div class="max-w-md w-full animate-slideUp">
+    <div class="text-center mb-10">
+        <div class="inline-block bg-white p-5 rounded-[2.5rem] shadow-xl mb-4 border-b-8 border-indigo-200">
+            <span class="text-6xl">🐍</span>
+        </div>
+        <h1 class="text-4xl font-black text-indigo-900 tracking-tighter">PYTHON KIDS</h1>
+        <p class="text-indigo-400 font-bold uppercase tracking-[0.3em] text-xs">Master Challenge</p>
+    </div>
+
+    <div class="bg-white p-8 rounded-[3rem] shadow-2xl border-2 border-indigo-50 relative overflow-hidden">
+        <div class="relative z-10">
+            <label class="block text-center text-gray-400 font-black text-xs uppercase mb-4 tracking-widest">Siapa Namamu, Hero?</label>
+            <input type="text" id="player-name" 
+                class="w-full p-5 rounded-2xl border-4 border-indigo-50 bg-indigo-50/30 text-center text-xl font-bold text-indigo-600 focus:border-indigo-400 focus:ring-0 outline-none transition-all placeholder:text-indigo-200"
+                placeholder="Ketik namamu di sini...">
+
+            <div class="grid grid-cols-1 gap-4 mt-8">
+                <button onclick="window.localStartMode('SOLO')" 
+                    class="group bg-gradient-to-r from-emerald-500 to-teal-500 text-white p-5 rounded-2xl font-black shadow-[0_6px_0_rgb(5,150,105)] active:shadow-none active:translate-y-1 transition-all flex items-center justify-between px-8">
+                    <div class="text-left">
+                        <span class="block">🏃 MAIN SENDIRI</span>
+                        <span class="text-[10px] opacity-80 font-medium">Petualangan Solo & Skor Global</span>
+                    </div>
+                    <span class="text-2xl group-hover:translate-x-1 transition-transform">➔</span>
+                </button>
+
+                <button onclick="window.localShowRoom()" 
+                    class="group bg-gradient-to-r from-indigo-500 to-purple-500 text-white p-5 rounded-2xl font-black shadow-[0_6px_0_rgb(67,56,202)] active:shadow-none active:translate-y-1 transition-all flex items-center justify-between px-8">
+                    <div class="text-left">
+                        <span class="block">👥 GABUNG ROOM</span>
+                        <span class="text-[10px] opacity-80 font-medium">Main Bareng Teman Sekelas</span>
+                    </div>
+                    <span class="text-2xl group-hover:scale-110 transition-transform">✨</span>
+                </button>
+            </div>
+        </div>
+
+        <div id="room-input-container" class="hidden absolute inset-0 bg-white/95 backdrop-blur-md z-20 flex flex-col items-center justify-center p-8 animate-fadeIn">
+            <button onclick="window.localHideRoom()" class="absolute top-6 right-6 text-gray-400 hover:text-red-500 text-2xl">✕</button>
+            <label class="font-black text-indigo-900 mb-2 uppercase text-sm">Masukkan ID Room</label>
+            <input type="text" id="room-id" 
+                class="w-full p-4 rounded-xl border-4 border-indigo-100 text-center text-2xl font-black text-indigo-600 uppercase mb-6 outline-none"
+                placeholder="Contoh: KELAS-A">
+            <button onclick="window.localStartMode('ROOM')" 
+                class="w-full bg-indigo-600 text-white py-4 rounded-xl font-black shadow-lg hover:bg-indigo-700 transition-all">
+                MASUK KE ROOM 🚀
+            </button>
+        </div>
+    </div>
+
+    <p class="text-center mt-8 text-gray-300 font-bold text-[10px] uppercase tracking-tighter">
+        Admin? Gunakan kode rahasiamu di kolom nama
+    </p>
 </div>
+
+<script>
+    /** * Kita lampirkan fungsi ke objek 'window' agar bisa dipanggil 
+     * meskipun file ini dimuat secara dinamis via fetch/innerHTML
+     */
+    window.localShowRoom = function() {
+        const name = document.getElementById('player-name').value.trim();
+        if (name.length < 3) {
+            alert("Isi namamu dulu (minimal 3 huruf), Hero!");
+            return;
+        }
+        document.getElementById('room-input-container').classList.remove('hidden');
+    };
+
+    window.localHideRoom = function() {
+        document.getElementById('room-input-container').classList.add('hidden');
+    };
+
+    window.localStartMode = function(mode) {
+        const nameInput = document.getElementById('player-name');
+        const roomInput = document.getElementById('room-id');
+        
+        const name = nameInput.value.trim();
+        const roomId = roomInput.value.trim().toUpperCase();
+
+        if (name.length < 3) {
+            alert("Isi namamu dulu, Hero!");
+            return;
+        }
+
+        // Pastikan fungsi ini ada di script.js
+        if (typeof window.initializePlayMode === "function") {
+            window.initializePlayMode(mode, name, roomId);
+        } else {
+            console.error("Eror: Fungsi initializePlayMode tidak ditemukan di script.js!");
+        }
+    };
+</script>
